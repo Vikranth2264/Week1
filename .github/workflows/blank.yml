@@ -1,12 +1,30 @@
-vikranth - name: pip-install-package
-  # You may pin to the exact commit or the version.
-  # uses: durandtibo/pip-install-package-action@9bad1fbf91b61c40b8f555f0bb19f2e742a6f0b7
-  uses: durandtibo/pip-install-package-action@v0.3.1
-  with:
-    # The package name
-    package-name: 
-    # The package target version
-    package-version: 
-    # The python version
-    python-version: 
+name: Install pip package
+
+on:
+  push:
+    branches:
+      - main  # You can change this to your target branch
+
+jobs:
+  install-pip-package:
+    runs-on: ubuntu-latest  # You can change the OS if needed (e.g., windows-latest)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Specify the version of Python, e.g., '3.8'
+
+      - name: Install pip package using custom action
+        uses: durandtibo/pip-install-package-action@v0.3.1
+        with:
+          package-name: pip   # This installs pip itself, but you can change it to any package name.
+          package-version: 'latest'  # You can specify a version if needed, or use 'latest' for the latest version.
+          python-version: '3.8'  # The Python version to use, matching the version above.
           
+      - name: Verify pip installation
+        run: |
+          pip --version  # Verify that pip is installed and check the version.
