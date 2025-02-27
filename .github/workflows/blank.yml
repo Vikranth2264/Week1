@@ -3,29 +3,36 @@ name: Install pip package
 on:
   push:
     branches:
-      - main  # Trigger on push to 'main' branch
+      - main  # Trigger on push to the 'main' branch
 
 jobs:
   install-pip-package:
-    runs-on: ubuntu-latest  # You can change the OS if needed (e.g., windows-latest)
+    runs-on: ubuntu-latest  # Use an appropriate runner, e.g., 'ubuntu-latest'
 
     steps:
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Set up Python
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'  # Specify the version of Python, e.g., '3.8'
 
-      - name: Install requests package using custom action
-        uses: durandtibo/pip-install-package-action@v0.3.1
-        with:
-          package-name: requests  # Specify the package you want to install (not 'pip')
-          package-version: 'latest'  # You can specify a version (e.g., '2.25.0') or 'latest'
-          python-version: '3.8'  # Ensure this matches the Python version used earlier
-
-      - name: Verify package installation
+      # Ensure pip is installed/upgraded
+      - name: Install or upgrade pip
         run: |
-          pip show requests  # Verify the 'requests' package is installed
+          python -m ensurepip --upgrade  # Ensures pip is installed and upgraded if necessary
+          python -m pip install --upgrade pip  # Upgrade pip to the latest version
+
+      # Install the desired Python package (e.g., 'requests')
+      - name: Install requests package using pip
+        run: |
+          pip install requests  # You can replace 'requests' with any package you want
+
+      # Verify the installation of pip and the requests package
+      - name: Verify pip and package installation
+        run: |
           pip --version  # Check the installed pip version
+          pip show requests  # Verify that 'requests' package is installed
