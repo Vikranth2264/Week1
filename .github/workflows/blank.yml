@@ -1,0 +1,31 @@
+name: Install Pip Example
+
+on:
+  push:
+    branches:
+      - main  # Trigger on push to the main branch
+
+jobs:
+  install-pip:
+    runs-on: ubuntu-latest  # Can use other runners (e.g., windows-latest)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Specify the version you want
+
+      - name: Install pip
+        run: |
+          python -m ensurepip --upgrade  # This ensures pip is installed/updated
+
+      - name: Verify pip installation
+        run: |
+          pip --version  # Output the pip version to verify installation
+
+      - name: Install dependencies (if you have requirements.txt)
+        run: |
+          pip install -r requirements.txt
