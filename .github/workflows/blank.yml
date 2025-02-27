@@ -3,7 +3,7 @@ name: Install pip package
 on:
   push:
     branches:
-      - main  # You can change this to your target branch
+      - main  # Trigger on push to 'main' branch
 
 jobs:
   install-pip-package:
@@ -18,13 +18,14 @@ jobs:
         with:
           python-version: '3.x'  # Specify the version of Python, e.g., '3.8'
 
-      - name: Install pip package using custom action
+      - name: Install requests package using custom action
         uses: durandtibo/pip-install-package-action@v0.3.1
         with:
-          package-name: pip   # This installs pip itself, but you can change it to any package name.
-          package-version: 'latest'  # You can specify a version if needed, or use 'latest' for the latest version.
-          python-version: '3.8'  # The Python version to use, matching the version above.
-          
-      - name: Verify pip installation
+          package-name: requests  # Specify the package you want to install (not 'pip')
+          package-version: 'latest'  # You can specify a version (e.g., '2.25.0') or 'latest'
+          python-version: '3.8'  # Ensure this matches the Python version used earlier
+
+      - name: Verify package installation
         run: |
-          pip --version  # Verify that pip is installed and check the version.
+          pip show requests  # Verify the 'requests' package is installed
+          pip --version  # Check the installed pip version
